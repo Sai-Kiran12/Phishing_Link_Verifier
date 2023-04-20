@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="This website is develop for identify the safety of url.">
+  <meta name="keywords" content="phishing url,phishing,cyber security,machine learning,classifier,python">
+  <meta name="author" content="UNKNOWN">
+      
+  <!--link href="styles.css" rel="stylesheet"-->
+  <title>URL detection</title>
+  <style>
+
+    body {
+			font-family: "Open Sans", sans-serif;
+			font-size: 16px;
+			line-height: 1.5;
+			background-color: #191b21;
+			color: #fff;
+		}
+
+		h1 {
+			font-size: 36px;
+			font-weight: bold;
+			text-align: center;
+			margin-top: 60px;
+			margin-bottom: 40px;
+			color: #fff;
+			text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+		}
+
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-bottom: 60px;
+			padding: 20px;
+			background-color: rgba(255, 255, 255, 0.05);
+			border-radius: 20px;
+			box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+			max-width: 600px;
+			width: 100%;
+		}
+
+		label {
+			font-weight: bold;
+			margin-bottom: 10px;
+			color: #fff;
+		}
+
+		input[type="text"] {
+			padding: 12px;
+			border-radius: 10px;
+			border: none;
+			background-color: rgba(255, 255, 255, 0.2);
+			width: 100%;
+			margin-bottom: 30px;
+			color: #fff;
+			font-size: 18px;
+			font-weight: bold;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		}
+
+    .right {
+    right: 0px;
+    width: 300px; 
+    }
+
+		.prediction {
+			font-size: 24px;
+			font-weight: bold;
+			text-align: center;
+			margin-bottom: 30px;
+			color: #fff;
+			text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+		}
+
+		button {
+			padding: 12px 24px;
+			background-color: #ff5722;
+			color: #fff;
+			border-radius: 10px;
+			border: none;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+			margin-bottom: 30px;
+			font-size: 18px;
+			font-weight: bold;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		}
+
+		button:hover {
+			background-color: #ff7f5c;
+		}
+
+    .check-button {
+			background-color: #00bfff;
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			font-size: 18px;
+			font-weight: bold;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+
+		.check-button:hover {
+			background-color: #1e90ff;
+		}
+
+    .safe_button {
+			background-color: rgb(54, 194, 54);
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			font-size: 18px;
+			font-weight: bold;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+
+		.safe_button:hover {
+			background-color: rgb(47, 160, 47);;
+		}
+
+    .unsafe_button {
+			background-color: rgb(255, 69, 69);
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			font-size: 18px;
+			font-weight: bold;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+
+		.unsafe_button:hover {
+			background-color: rgb(221, 0, 0);
+		}
+
+    .my-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    }
+
+
+    </style>
+    
+</head>
+
+<body>
+    
+<div class=" container">
+    <div class="row">
+        <div class="form col-md" id="form1">
+        <center><h1>Check URL</h1></center>
+    
+            <br><center>
+            <form action="/" method ="post">
+                <label for="url" class="form__label">Enter Url</label>
+                <input type="text" class="form__input" name ='url' id="url" placeholder="Enter URL" required="" />
+                <button class="check-button" role="button" >Check here</button>
+            </form></center>
+    </div>
+    
+    <div class="col-md" id="form2">
+        
+        <center>
+        <h6 style="font-size: small;"><a href= {{ url }} target="_blank">{{ url }}</a></h6></center>
+           
+        <center>
+        <h3 id="prediction"></h3>
+        <button class="unsafe_button" id="button2" style="display:none;" role="button" onclick="window.open('{{url}}')" target="_blank" >Still want to Continue</button>
+        <button class="safe_button" id="button1" style="display:none;" role="button"  onclick="window.open('{{url}}')" target="_blank">Continue</button></center>
+    </div> 
+</div>
+<br>
+<p class="my-footer" style="font-size: x-small;">©2023 PHISHING TOOL</p>
+</div>    
+    <script>
+        
+            let x = '{{xx}}';
+            let num = x*100;
+            if (0<=x && x<0.50){
+                num = 100-num;
+            }
+            let txtx = num.toString();
+            if(x<=1 && x>=0.70){
+                var label = "Website is "+txtx +"% safe to use...";
+                document.getElementById("prediction").innerHTML = label;
+                document.getElementById("button1").style.display="block";
+                document.getElementById("button2").style.display = "none";
+            }
+            else if (0<=x && x<0.70){
+                var label = "Website is "+txtx +"% unsafe to use..."
+                document.getElementById("prediction").innerHTML = label ;
+                document.getElementById("button2").style.display="block";
+                document.getElementById("button1").style.display = "none";
+            }
+        
+    </script>
+    
+</body>
+
+</html>
+
